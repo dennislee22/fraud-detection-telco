@@ -278,4 +278,65 @@ During Training (.fit()): The model has access to both the evidence (X_train) an
 
 During Prediction (.predict()): The model's training is finished. Its rules are locked in. Now, it only gets new evidence (X_test). It no longer has the answers. It simply applies the best rules it learned during training to predict a new answer. It cannot "recheck" because the answer key (y_test) is hidden from it.
 
+The Confusion Matrix
+[[380   0]
+ [  0  20]]
+This is a table that shows the model's performance in detail:
 
+Top-Left (380): True Negatives (TN)
+
+These are the legitimate users that the model correctly identified as legitimate. There were 380, and the model got all of them right.
+
+Top-Right (0): False Positives (FP)
+
+These are legitimate users that the model incorrectly flagged as fraudulent. An FP is a costly mistake because you might block a real customer. Your model made zero of these mistakes, which is perfect.
+
+Bottom-Left (0): False Negatives (FN)
+
+These are fraudulent users that the model failed to catch. This is the most dangerous type of error, as it means fraud is going undetected. Your model had zero of these misses, which is also perfect.
+
+Bottom-Right (20): True Positives (TP)
+
+These are the fraudulent users that the model correctly identified as fraudulent. There were 20, and the model caught all of them.
+
+The Classification Report
+This report translates the numbers from the confusion matrix into more intuitive scores:
+
+Precision (for True class): 1.00
+
+Question: When the model predicts a user is fraudulent, how often is it correct?
+
+Calculation: True Positives / (True Positives + False Positives) -> 20 / (20 + 0) = 1.00
+
+Meaning: Your model has 100% precision. Every single user it flagged as fraud was actually a fraudulent user.
+
+Recall (for True class): 1.00
+
+Question: Of all the actual fraudulent users in the dataset, what percentage did the model successfully catch?
+
+Calculation: True Positives / (True Positives + False Negatives) -> 20 / (20 + 0) = 1.00
+
+Meaning: Your model has 100% recall. It found every single fraudulent user in the test set.
+
+F1-Score: 1.00
+
+This is the harmonic mean of Precision and Recall. It provides a single score that balances both metrics, and it's particularly useful for imbalanced datasets like this one. A score of 1.00 is perfect.
+
+Accuracy: 1.00
+
+This is the overall percentage of correct predictions. Since the model made no mistakes, the accuracy is 100%.
+
+Conclusion for Part 1: The model achieved a perfect score on this test set. This is likely because the synthetic data has very clear and distinct patterns for fraudulent vs. legitimate behavior. In a real-world scenario, the scores would be lower, but this shows the model is learning the intended patterns effectively.
+
+Part 2: Feature Importances
+This section answers the question: "Which behavioral patterns were most useful for the model's decisions?"
+
+The model assigns a score to each feature based on how much it helped improve the accuracy of its predictions.
+
+avg_duration (0.413): This was by far the most important feature. The huge difference between the short, consistent calls of fraudsters and the varied calls of legitimate users gave the model the most information.
+
+std_duration (0.223): The standard deviation of call duration was the second most important. This tells the model how consistent the call lengths are. A very low standard deviation is a strong sign of automation (fraud).
+
+total_calls, outgoing_call_ratio, nocturnal_call_ratio: These features were also very helpful, capturing the high volume, one-way direction, and off-hours nature of the fraudulent activity.
+
+mobility (0.000): This feature has an importance of zero. This means the other features were so powerful and clear that the model could perfectly identify all the fraudsters without even needing to check if they were moving between cell towers.
