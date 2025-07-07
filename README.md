@@ -1,98 +1,53 @@
 # Detecting Fraudulent Users in Telco
-Answering the call to combat telecommunications fraud, particularly within the prepaid customer segment, requires a sophisticated blend of data analysis and machine learning. Unlike postpaid services where customer information is more readily available, the anonymous nature of prepaid SIMs presents a unique challenge. Here is a real-life example of how a telecommunications company would train a model to detect a specific type of prepaid fraud: SIM Box Fraud.
+Answering the call to combat telecommunications fraud, particularly within the prepaid customer segment, requires a sophisticated blend of data analysis and machine learning. Unlike postpaid services where customer information is more readily available, the anonymous nature of prepaid SIMs presents a unique challenge. Here is a real-life example of how a telco would train a model to detect a specific type of prepaid fraud: SIM Box Fraud.
 
-The Scenario: Unmasking SIM Box Fraud
-SIM box fraud is a prevalent issue where international calls are illegally terminated as local calls. Fraudsters use a device called a SIM box, which houses multiple prepaid SIM cards. When an international call comes in, it's routed over the internet to the SIM box, which then uses a local prepaid SIM to connect the last leg of the call. This bypasses the international gateway of the local telecom operator, depriving them of significant revenue from international call tariffs.
+#### The Scenario: Unmasking SIM Box Fraud
+SIM box fraud is a prevalent issue where international calls are illegally terminated as local calls. Fraudsters use a device called a SIM box, which houses multiple prepaid SIM cards. When an international call comes in, it's routed over the internet to the SIM box, which then uses a local prepaid SIM to connect the last leg of the call. This bypasses the international gateway of the local operator, depriving them of significant revenue from international call tariffs.
 
-
-
-For the telecom company, the goal is to identify the prepaid SIM cards being used in these SIM boxes as quickly as possible to block them and mitigate financial losses.
-
-Step 1: Data Collection and Aggregation
+## Step 1: Data Collection and Aggregation
 The first step is to gather relevant data for each prepaid SIM card on the network. The primary source of this information is the Call Detail Records (CDRs). For each call and SMS, a CDR is generated containing a wealth of information. Key data points for our fraud detection model would include:
 
-Subscriber ID (IMSI/MSISDN): The unique identifier for the SIM card.
-
-Call Type: Incoming or outgoing.
-
-Call Duration: The length of the call in seconds.
-
-Time of Day: When the call was made (hour, minute).
-
-Called Number (B-Number): The number receiving the call.
-
-Calling Number (A-Number): For incoming calls, the number making the call.
-
-Cell Tower ID: The location of the cell tower that handled the call.
-
-IMEI: The unique identifier of the handset used.
+- Subscriber ID (IMSI/MSISDN): The unique identifier for the SIM card.
+- Call Type: Incoming or outgoing.
+- Call Duration: The length of the call in seconds.
+- Time of Day: When the call was made (hour, minute).
+- Called Number (B-Number): The number receiving the call.
+- Calling Number (A-Number): For incoming calls, the number making the call.
+- Cell Tower ID: The location of the cell tower that handled the call.
+- IMEI: The unique identifier of the handset used.
 
 This data is collected and aggregated over specific time windows (e.g., hourly, daily) for each subscriber to build a behavioral profile.
 
-Step 2: Feature Engineering - Building the Behavioral DNA
-Raw CDR data isn't directly fed into a machine learning model. Instead, data scientists engage in feature engineering to create meaningful variables that can help distinguish between a regular user and a fraudulent SIM box. For detecting SIM box fraud, the following features are often engineered:
+## Step 2: Feature Engineering - Building the Behavioral DNA
+Raw CDR data isn't directly fed into a ML model. Instead, data scientists engage in feature engineering to create meaningful variables that can help distinguish between a regular user and a fraudulent SIM box. For detecting SIM box fraud, the following features are often engineered:
 
-Call Ratios:
+- Call Ratios: Incoming vs. Outgoing Call Ratio: SIM boxes primarily receive calls (the international leg) and make a new local call. A very high ratio of outgoing to incoming calls (from the perspective of the local network) is a strong indicator. Ratio of Unique B-Numbers: A normal user calls a relatively diverse set of numbers over time. A SIM in a SIM box will call a vast number of unique numbers in a short period.
+- Temporal Patterns: Nocturnal Activity: SIM boxes often operate during off-peak hours, including late at night, to take advantage of lower network traffic and less scrutiny. A high volume of calls during these hours is suspicious.
+- Call Duration Statistics: Calls routed through SIM boxes often have unusually consistent or very short durations. Features like the average call duration and the standard deviation of call durations are crucial.
+- Geospatial Analysis: Lack of Mobility: A SIM card in a stationary SIM box will always connect to the same one or two cell towers. A legitimate mobile user, by contrast, will show movement across different cell tower locations.
+- Behavioral Flags: SIM boxes often make very short calls (a few seconds) to check if the SIM is still active, a pattern not typical for genuine users.
+- Sequential Dialing: Sometimes, the numbers dialed by a SIM box follow a sequential pattern.
 
-Incoming vs. Outgoing Call Ratio: SIM boxes primarily receive calls (the international leg) and make a new local call. A very high ratio of outgoing to incoming calls (from the perspective of the local network) is a strong indicator.
+## Step 3: Model Selection and Training
+With the engineered features, the next step is to choose and train a ML model. A common and effective approach is to use a supervised learning model, specifically a Random Forest Classifier (RFC). Labeling the data: To train a supervised model, a historical dataset with labeled examples of fraudulent and non-fraudulent SIMs is required. It builds a multitude of decision trees, each based on a random subset of the features. To classify a new SIM card, the model runs its features through all the decision trees and the final classification (fraudulent or not) is determined by a majority vote from all the trees.
 
-Ratio of Unique B-Numbers: A normal user calls a relatively diverse set of numbers over time. A SIM in a SIM box will call a vast number of unique numbers in a short period.
-
-Temporal Patterns:
-
-Nocturnal Activity: SIM boxes often operate during off-peak hours, including late at night, to take advantage of lower network traffic and less scrutiny. A high volume of calls during these hours is suspicious.
-
-Call Duration Statistics: Calls routed through SIM boxes often have unusually consistent or very short durations. Features like the average call duration and the standard deviation of call durations are crucial.
-
-Geospatial Analysis:
-
-Lack of Mobility: A SIM card in a stationary SIM box will always connect to the same one or two cell towers. A legitimate mobile user, by contrast, will show movement across different cell tower locations.
-
-Behavioral Flags:
-
-"Alive" Calls: SIM boxes often make very short calls (a few seconds) to check if the SIM is still active, a pattern not typical for genuine users.
-
-Sequential Dialing: Sometimes, the numbers dialed by a SIM box follow a sequential pattern.
-
-Step 3: Model Selection and Training
-With the engineered features, the next step is to choose and train a machine learning model. A common and effective approach is to use a supervised learning model, specifically a Random Forest Classifier.
-
-Labeling the Data: To train a supervised model, a historical dataset with labeled examples of fraudulent and non-fraudulent SIMs is required. The telecom company's fraud investigation team would have a record of previously identified and confirmed SIM box numbers. This labeled data serves as the "ground truth" for the model to learn from.
-
-Training Process: The Random Forest model is trained on this labeled dataset. It builds a multitude of decision trees, each based on a random subset of the features. To classify a new SIM card, the model runs its features through all the decision trees and the final classification (fraudulent or not) is determined by a majority vote from all the trees. This method is robust and handles complex interactions between features well.
-
-Step 4: Model Evaluation and Tuning
+## Step 4: Model Evaluation and Tuning
 Once the model is trained, it's crucial to evaluate its performance on a separate test dataset that it has not seen before. Key metrics for evaluation in fraud detection include:
 
-Precision: Of all the SIMs the model flagged as fraudulent, what percentage were actually fraudulent? High precision is important to avoid incorrectly blocking legitimate customers.
+- Precision: Of all the SIMs the model flagged as fraudulent, what percentage were actually fraudulent? High precision is important to avoid incorrectly blocking legitimate customers.
+- Recall (Sensitivity): Of all the truly fraudulent SIMs, what percentage did the model correctly identify? High recall is essential to catch as much fraud as possible.
+- F1-Score: The harmonic mean of precision and recall, providing a balanced measure of the model's accuracy.
 
-Recall (Sensitivity): Of all the truly fraudulent SIMs, what percentage did the model correctly identify? High recall is essential to catch as much fraud as possible.
+# Code Explanation
 
-F1-Score: The harmonic mean of precision and recall, providing a balanced measure of the model's accuracy.
-
-The model's parameters are then tuned to achieve the optimal balance between precision and recall based on the company's risk appetite.
-
-Step 5: Deployment and Continuous Monitoring
-After successful evaluation, the model is deployed into a production environment. Here's how it works in a real-life operational setting:
-
-Real-time Scoring: The system processes CDRs in near real-time. The engineered features for each active prepaid SIM are calculated continuously.
-
-Fraud Alert Generation: The trained model scores each SIM based on its behavior. If a SIM's fraud score crosses a predefined threshold, an alert is generated.
-
-Investigator Action: This alert is sent to a fraud analyst's dashboard. The analyst reviews the flagged SIM's activity and the features that contributed to its high score.
-
-Action and Feedback Loop: If the analyst confirms the fraud, they block the SIM card. This confirmation is then fed back into the system to be included in future training datasets, allowing the model to continuously learn and adapt to new fraud patterns.
-
-By implementing such a machine learning-powered system, telecom operators can move from a reactive to a proactive stance against prepaid fraud, significantly reducing revenue leakage and protecting their network integrity.
-
-
-
+```
 def feature_engineering(df):
     """
     Processes the raw CDR data to create aggregated features for each user.
     """
+```
 This defines the function, which takes one argument: df, a pandas DataFrame containing the raw call detail records (CDRs).
-
+```
 Python
 
     user_features = df.groupby('user_id').agg(
