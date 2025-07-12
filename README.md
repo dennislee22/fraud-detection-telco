@@ -28,7 +28,7 @@ Raw CDR data isn't directly fed into a ML model. Instead, data scientists engage
 - Behavioral Flags: SIM boxes often make very short calls (a few seconds) to check if the SIM is still active, a pattern not typical for genuine users.
 - Sequential Dialing: Sometimes, the numbers dialed by a SIM box follow a sequential pattern.
 
-## Step 3: Model Selection and Training
+## Step 3: Model Training
 With the engineered features, the next step is to choose and train a ML model. A common and effective approach is to use a supervised learning model, specifically a Random Forest Classifier (RFC). Labeling the data: To train a supervised model, a historical dataset with labeled examples of fraudulent and non-fraudulent SIMs is required. It builds a multitude of decision trees, each based on a random subset of the features. To classify a new SIM card, the model runs its features through all the decision trees and the final classification (fraudulent or not) is determined by a majority vote from all the trees.
 
 ## Step 4: Model Evaluation and Tuning
@@ -37,6 +37,10 @@ Once the model is trained, it's crucial to evaluate its performance on a separat
 - Precision: Of all the SIMs the model flagged as fraudulent, what percentage were actually fraudulent? High precision is important to avoid incorrectly blocking legitimate customers.
 - Recall (Sensitivity): Of all the truly fraudulent SIMs, what percentage did the model correctly identify? High recall is essential to catch as much fraud as possible.
 - F1-Score: The harmonic mean of precision and recall, providing a balanced measure of the model's accuracy.
+
+
+
+
 
 # Code Explanation
 
