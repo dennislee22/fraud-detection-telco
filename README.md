@@ -74,7 +74,7 @@ Process complete in 200.50 seconds.
 ```
 - Feature Importances: "Which behavioral patterns were most useful for the model's decisions?"
    1. The values you see (e.g., 0.25, 0.22) are the average decrease in node impurity (specifically Gini impurity) that a feature provides across all trees in the forest. It measures how effective a feature is at creating "pure" splits, separating the 'fraud' and 'not-fraud' cases into clean, distinct groups. These values are normalized so that the sum of all importances equals 1.0. They represent a relative contribution to the model's overall decision-making purity. A perfectly pure group would have an impurity of 0 (e.g., all users in the group are fraudulent).
-   2. RFC builds hundreds of deep, independent decision trees on random subsets of the data and features. It then averages their predictions. Because each tree is independent, features that are generally good predictors (like nocturnal_call_ratio in your case) will consistently produce pure splits and thus get a high importance score.
+   2. RFC builds hundreds of deep, independent decision trees on random subsets of the data and features. It then averages their predictions. Because each tree is independent, features that are generally good predictors (like nocturnal_call_ratio) will consistently produce pure splits and thus get a high importance score.
     
 - Run [XGBoost script](train-XGBoost.py) for Step 2 and 3 based on XGBoost technique. Result as follows.
   
@@ -122,7 +122,7 @@ Process complete in 201.70 seconds.
 - The confusion matrix table shows common output.
   1. True Negatives (TN = 38000). These are the legitimate users that the model correctly identified as legitimate. There were 380, and the model got all of them right.
   2. False Positives (FP = 0). These are legitimate users that the model incorrectly flagged as fraudulent. An FP is a costly mistake because you might block a real customer. The model made zero of these mistakes, which is perfect.
-  3. False Negatives (FN = 0). These are fraudulent users that the model failed to catch. This is the most dangerous type of error, as it means fraud is going undetected. Your model had zero of these misses, which is also perfect.
+  3. False Negatives (FN = 0). These are fraudulent users that the model failed to catch. This is the most dangerous type of error, as it means fraud is going undetected. The model had zero of these misses, which is also perfect.
   4. True Positives (TP = 2000). These are the fraudulent users that the model correctly identified as fraudulent. There were 2000, and the model caught all of them.
 
 - The classification report translates the numbers from the confusion matrix into more intuitive scores:
