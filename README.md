@@ -27,9 +27,10 @@ Raw CDR data isn't directly fed into a ML model. Instead, data scientists engage
 - is_fraud: Label applies on specific MSISDN with it associated features based on historical judgement. 
 
 ## Step 3: Model Training
-With the engineered features, the next step is to train a ML model. A common and effective approach is to use a supervised learning model, such as Random Forest Classifier (RFC) and XGBoost (Gradient Boosting). 
-To train a supervised model, a historical dataset with labeled examples of fraudulent and non-fraudulent SIMs is required. It builds a multitude of decision trees, each based on a random subset of the features. To classify whether a particular MSISDN is fradulent or not, the model runs its features through all the decision trees and final outcome is determined by a majority vote from all the trees.
-
+- With the engineered features, the next step is to train a ML model. A common and effective approach is to use a supervised learning model, such as Random Forest Classifier (RFC) and XGBoost (Gradient Boosting).
+- RFC constructs many individual decision trees by training each one on a slightly different, random sample of the data. This technique, called bagging, allows the trees to be built in parallel. The final prediction is then determined by averaging the results from all the trees in the forest.
+- XGBoost combines many "weak" models sequentially, where each new model focuses on fixing the residuals/errors of the previous one, to produce a collectively reliable model.
+- To train a supervised model, a historical dataset with labeled examples of fraudulent and non-fraudulent SIMs is required. It builds a multitude of decision trees, each based on a random subset of the features. To classify whether a particular MSISDN is fradulent or not, the model runs its features through all the decision trees and final outcome is determined by a majority vote from all the trees.
 
 ## The Result & Analysis
 - For Step 1, sythentic data can be created using this [synthetic data creation script](create-synthetic-cdr.py).
