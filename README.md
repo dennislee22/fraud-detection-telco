@@ -7,14 +7,12 @@ SIM box fraud is a prevalent issue where international calls are illegally termi
 ## Step 1: Data Collection and Aggregation
 The first step is to gather relevant data for each prepaid SIM card on the network. The primary source of this information is the Call Detail Records (CDRs). For each call and SMS, a CDR is generated containing a wealth of information. Key data points for our fraud detection model would include:
 
-- Subscriber ID (IMSI/MSISDN): The unique identifier for the SIM card.
-- Call Type: Incoming or outgoing.
-- Call Duration: The length of the call in seconds.
-- Time of Day: When the call was made (hour, minute).
-- Called Number (B-Number): The number receiving the call.
-- Calling Number (A-Number): For incoming calls, the number making the call.
-- Cell Tower ID: The location of the cell tower that handled the call.
-- IMEI: The unique identifier of the handset used.
+- Subscriber ID (msisdn): The unique identifier for the SIM card.
+- call_direction: Incoming or outgoing.
+- duration: The length of the call in seconds.
+- hour_of_day: Which hour the call was made.
+- imei: The unique identifier of the handset used.
+- cell_tower: The location of the cell tower that handled the call.
 
 This data is collected and aggregated over specific time windows (e.g., hourly, daily) for each subscriber to build a behavioral profile.
 
