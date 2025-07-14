@@ -30,8 +30,8 @@ To train a supervised model, a historical dataset with labeled examples of fraud
 
 
 ## The Result & Analysis
-- For Step 1, sythentic data can be created using this script.
-- Run for Step 2 and 3 using RFC technique. Result as follows.
+- For Step 1, sythentic data can be created using this [synthetic data creation script](create-synthetic-cdr.py).
+- Run [RFC script](train-RFC.py) for Step 2 and 3 based on RFC technique. Result as follows.
 
 ```
 $ python train-RFC.py 
@@ -74,7 +74,7 @@ Process complete in 200.50 seconds.
    1. The values you see (e.g., 0.25, 0.22) are the average decrease in node impurity (specifically Gini impurity) that a feature provides across all trees in the forest. It measures how effective a feature is at creating "pure" splits, separating the 'fraud' and 'not-fraud' cases into clean, distinct groups. These values are normalized so that the sum of all importances equals 1.0. They represent a relative contribution to the model's overall decision-making purity. A perfectly pure group would have an impurity of 0 (e.g., all users in the group are fraudulent).
    2. RFC builds hundreds of deep, independent decision trees on random subsets of the data and features. It then averages their predictions. Because each tree is independent, features that are generally good predictors (like nocturnal_call_ratio in your case) will consistently produce pure splits and thus get a high importance score.
     
-- Run for Step 2 and 3 using XGBoost technique. Result as follows.
+- Run [XGBoost script](train-XGBoost.py) for Step 2 and 3 based on XGBoost technique. Result as follows.
   
 ```
 $ python train-xgboost.py 
@@ -133,7 +133,7 @@ Process complete in 201.70 seconds.
 - Both RFC and XGBoost could lead to a perfect score but give very different answers due to different calculation methods and model architectures.
 
 ## Step 4: Model Visualization
-
+- Run this [script](inference-viz.ipynb) to generate and visualize the inference result.
 
 
 
