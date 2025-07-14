@@ -120,14 +120,14 @@ Process complete in 201.70 seconds.
    2. XGBoost builds trees sequentially. Each new tree is built to correct the errors made by the previous ones. This process can cause it to focus on features differently. For example, if total_calls corrects the most errors early on, it will be used frequently (high 'weight' score). Then, other features like outgoing_call_ratio might be used to clean up the remaining, more subtle errors.
 
 - The confusion matrix table shows common output.
-  1. True Negatives (TN = 380). These are the legitimate users that the model correctly identified as legitimate. There were 380, and the model got all of them right.
+  1. True Negatives (TN = 38000). These are the legitimate users that the model correctly identified as legitimate. There were 380, and the model got all of them right.
   2. False Positives (FP = 0). These are legitimate users that the model incorrectly flagged as fraudulent. An FP is a costly mistake because you might block a real customer. The model made zero of these mistakes, which is perfect.
   3. False Negatives (FN = 0). These are fraudulent users that the model failed to catch. This is the most dangerous type of error, as it means fraud is going undetected. Your model had zero of these misses, which is also perfect.
-  4. True Positives (TP = 20). These are the fraudulent users that the model correctly identified as fraudulent. There were 20, and the model caught all of them.
+  4. True Positives (TP = 2000). These are the fraudulent users that the model correctly identified as fraudulent. There were 2000, and the model caught all of them.
 
 - The classification report translates the numbers from the confusion matrix into more intuitive scores:
-  1. Precision (for True class): 1.00. TP/(TP + FP) -> 20/(20 + 0) = 1.00. The model has 100% precision. Every single user it flagged as fraud was actually a fraudulent user.
-  2. Recall (for True class): 1.00. TP /(TP + FN) -> 20 / (20 + 0) = 1.00. The model has 100% recall. It found every single fraudulent user in the test set.
+  1. Precision (for True class): 1.00. TP/(TP + FP) -> 2000/(2000 + 0) = 1.00. The model has 100% precision. Every single user it flagged as fraud was actually a fraudulent user.
+  2. Recall (for True class): 1.00. TP /(TP + FN) -> 2000/(2000 + 0) = 1.00. The model has 100% recall. It found every single fraudulent user in the test set.
   3. F1-Score: 1.00. This is the harmonic mean of Precision and Recall. It provides a single score that balances both metrics, and it's particularly useful for imbalanced datasets like this one. A score of 1.00 is perfect. High recall is essential to catch as much fraud as possible.
   4. Accuracy: 1.00. This is the overall percentage of correct predictions. Since the model made no mistakes, the accuracy is 100%.
 
