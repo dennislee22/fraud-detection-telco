@@ -1,5 +1,7 @@
 # Detecting Fraudulent Users in Telco
-Answering the call to combat telecommunications fraud, particularly within the prepaid customer segment, requires a sophisticated blend of data analysis and machine learning. Unlike postpaid services where customer information is more readily available, the anonymous nature of prepaid SIMs presents a unique challenge. Here is a real-life example of how a telco would train a model to detect a specific type of prepaid fraud: SIM Box Fraud.
+
+
+Answering the call to combat telecommunications fraud, particularly within the prepaid customer segment, requires a sophisticated blend of data analysis and machine learning. Unlike postpaid services where customer information is more readily available, the anonymous nature of prepaid SIMs presents a unique challenge. Here is a real-life example of how a telco would train a model to detect a specific type of prepaid fraud `SIM box fraud`.
 
 #### The Scenario: Unmasking SIM Box Fraud
 SIM box fraud is a prevalent issue where international calls are illegally terminated as local calls. Fraudsters use a device called a SIM box, which houses multiple prepaid SIM cards. When an international call comes in, it's routed over the internet to the SIM box, which then uses a local prepaid SIM to connect the last leg of the call. This bypasses the international gateway of the local operator, depriving them of significant revenue from international call tariffs.
