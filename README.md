@@ -139,8 +139,67 @@ Process complete in 201.70 seconds.
 - The model achieved a perfect score on this test set. This is likely because the synthetic data has very clear and distinct patterns for fraudulent vs. legitimate behavior. In a real-world scenario, the scores would be lower, but this shows the model is learning the intended patterns effectively.
 - Both RFC and XGBoost could lead to a perfect score but give very different answers due to different calculation methods and model architectures.
 
-## Step 4: Model Visualization
+## Step 5: Model Visualization
 - Run this [script](inference-viz.ipynb) to generate and visualize the inference result.
+- For model inferencing, you may opt to host the model with multiple replicas to reduce the API latency when serving multiple clients/users.
+
+<img width="700" height="746" alt="image" src="https://github.com/user-attachments/assets/b850a3c5-ed1c-411d-80c2-51cd30ffb7d6" />
+
+  i. Test the model with the following JSON format input.
+  ```
+  {
+    "dataframe_split": {
+      "columns": [
+        "total_calls",
+        "outgoing_call_ratio",
+        "avg_duration",
+        "std_duration",
+        "nocturnal_call_ratio",
+        "mobility"
+      ],
+      "data": [
+        [
+          350,
+          0.98,
+          15.5,
+          4.8,
+          0.92,
+          1
+        ]
+      ]
+    }
+  }
+  ```
+  ii. Test the model by running curl command towards the exposed API endpoint.
+  ```
+  curl -H "Content-Type: application/json" \
+  -X POST https://modelservice.cmlws5.apps.dlee5.cldr.example/model \
+  -d '{
+    "accessKey": "m7f0r82csvg7rl2i1d0eqyyrgtkl6iwq",
+    "request": {
+      "dataframe_split": {
+        "columns": [
+          "total_calls",
+          "outgoing_call_ratio",
+          "avg_duration",
+          "std_duration",
+          "nocturnal_call_ratio",
+          "mobility"
+        ],
+        "data": [
+          [
+            350,
+            0.98,
+            15.5,
+            4.8,
+            0.92,
+            1
+          ]
+        ]
+      }
+    }
+  }'
+  ```
 
 
 
