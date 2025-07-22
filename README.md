@@ -32,6 +32,10 @@ Raw CDR data isn't directly fed into a ML model. Instead, data scientists engage
 - XGBoost combines many "weak" models sequentially, where each new model focuses on fixing the residuals/errors of the previous one, to produce a collectively reliable model.
 - To train a supervised model, a historical dataset with labeled examples of fraudulent and non-fraudulent SIMs is required. It builds a multitude of decision trees, each based on a random subset of the features. To classify whether a particular MSISDN is fradulent or not, the model runs its features through all the decision trees and final outcome is determined by a majority vote from all the trees.
 
+- You may also build the model using [MLflow](train-XGBoost-MLflow.py).
+<img width="700" height="557" alt="image" src="https://github.com/user-attachments/assets/368f3a5d-e6a2-4621-91bd-aaa93c62d06b" />
+<img width="700" height="742" alt="image" src="https://github.com/user-attachments/assets/5a20455a-836c-4f7b-a98c-fd2945312ac0" />
+
 ## The Result & Analysis
 - For Step 1, sythentic data can be created using this [synthetic data creation script](create-synthetic-cdr.py).
 - Run [RFC script](train-RFC.py) for Step 2 and 3 based on RFC technique. Result as follows.
